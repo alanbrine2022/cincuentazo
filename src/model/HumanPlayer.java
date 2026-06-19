@@ -11,9 +11,10 @@ public class HumanPlayer extends Player{
         return null;
     }
 
-    public void playCard(Card card){
-        if(card != null && getHand().contains(card)){
-            removeCard(card);
+    public boolean playSelectedCard(Card card, GameModel gameModel){
+        if(card == null || !getHand().contains(card)){
+            return false;
         }
+        return gameModel.playCard(this, card);
     }
 }
