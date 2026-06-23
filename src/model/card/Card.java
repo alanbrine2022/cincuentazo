@@ -1,4 +1,4 @@
-package model;
+package model.card;
 
 public class Card implements ICard{
     private final int rank;
@@ -38,7 +38,13 @@ public class Card implements ICard{
     }
 
     @Override
-    public int getValue(){return value;}
+    public int getValue(int currentSum){
+        if(rank == 1){
+            if(currentSum > 40){return 1;}
+            else{return 10;}
+        }
+        return value;
+    }
 
     @Override
     public int getRank(){return rank;}

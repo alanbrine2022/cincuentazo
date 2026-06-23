@@ -1,4 +1,7 @@
-package model;
+package model.deck;
+
+import model.card.Card;
+import model.player.IPlayer;
 
 import java.util.List;
 

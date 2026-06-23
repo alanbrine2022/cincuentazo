@@ -1,4 +1,6 @@
-package model;
+package model.player;
+
+import model.card.Card;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +39,7 @@ public abstract class Player implements IPlayer{
     @Override
     public boolean hasValidMove(int currentSum){
         for(Card card : hand){
-            if(card.getValue() + currentSum > 50){
+            if(card.getValue(currentSum) + currentSum < 50){
                 return true;
             }
         }

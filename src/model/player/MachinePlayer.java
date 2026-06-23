@@ -1,4 +1,6 @@
-package model;
+package model.player;
+
+import model.card.Card;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +26,10 @@ public class MachinePlayer extends Player{
         }
 
         Card bestCard = validCards.get(0);
-        int bestSum = currentSum + bestCard.getValue();
+        int bestSum = currentSum + bestCard.getValue(currentSum);
 
         for(Card card : validCards){
-            int newSum = currentSum + card.getValue();
+            int newSum = currentSum + card.getValue(currentSum);
             if(newSum > bestSum){
                 bestSum = newSum;
                 bestCard = card;

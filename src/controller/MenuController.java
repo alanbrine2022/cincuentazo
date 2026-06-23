@@ -4,28 +4,44 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ChoiceDialog;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.event.ActionEvent;
 
 import java.net.URL;
+import java.util.Optional;
 
 public class MenuController {
     @FXML
     public void handlePlayButton(ActionEvent event){
         try{
-            URL url = MenuController.class.getResource("../view/Game.fxml");
+            ChoiceDialog<Integer> dialog = new ChoiceDialog<>(1, 1, 2, 3);
+            dialog.setTitle("Cincuentazo");
+            dialog.setHeaderText("¿Con cuantos bots quieres jugar?");
+            dialog.setContentText("Número de bots: ");
 
-            FXMLLoader loader = new FXMLLoader(url);
-            Parent gameRoot = loader.load();
+            Optional<Integer> result = dialog.showAndWait();
 
-            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            if(result.isPresent()) {
+                int numBots = result.get();
 
-            Scene gameScene = new Scene(gameRoot);
+                URL url = MenuController.class.getResource("../view/Game.fxml");
 
-            currentStage.setTitle("Cincuentazo - Partida");
-            currentStage.setScene(gameScene);
-            currentStage.show();
+                FXMLLoader loader = new FXMLLoader(url);
+                Parent gameRoot = loader.load();
+
+                GameController gameController = loader.getController();
+                gameController.startNewGame(numBots);
+
+                Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+                Scene gameScene = new Scene(gameRoot);
+
+                currentStage.setTitle("Cincuentazo - Partida");
+                currentStage.setScene(gameScene);
+                currentStage.show();
+            }
         }catch(Exception e){
             e.printStackTrace();
         }

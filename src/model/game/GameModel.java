@@ -1,4 +1,10 @@
-package model;
+package model.game;
+
+import model.card.Card;
+import model.deck.Deck;
+import model.player.HumanPlayer;
+import model.player.IPlayer;
+import model.player.MachinePlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,12 +12,18 @@ import java.util.Stack;
 
 public class GameModel {
     private Deck deck;
-    private List<IPlayer> players = new ArrayList<>();
-    private Stack<Card> tablePile = new Stack<>();
+    private List<IPlayer> players;
+    private Stack<Card> tablePile;
+    private HumanPlayer player;
     private int currentSum;
     private int playerIndex;
 
-    public GameModel(){}
+    public GameModel(){
+        currentSum = 0;
+        playerIndex = 0;
+        players = new ArrayList<>();
+        tablePile = new Stack<>();
+    }
 
     public void startNewGame(int numBots){
         deck = new Deck();
@@ -20,7 +32,7 @@ public class GameModel {
         currentSum = 0;
         playerIndex = 0;
 
-        HumanPlayer player = new HumanPlayer("Jugador");
+        player = new HumanPlayer("Jugador");
         deck.dealToPlayer(player);
         players.add(player);
 
@@ -32,7 +44,7 @@ public class GameModel {
 
         Card firstCard = deck.drawCard();
         tablePile.push(firstCard);
-        currentSum = firstCard.getValue();
+        currentSum = firstCard.getValue(currentSum);
     }
 
     public boolean playCard(IPlayer player, Card card){
@@ -46,28 +58,34 @@ public class GameModel {
 
         player.removeCard(card);
         tablePile.push(card);
-        currentSum += card.getValue();
+        currentSum += card.getValue(currentSum);
 
         if(deck.isEmpty()){
             deck.recycleTableCards(new ArrayList<>(tablePile.subList(0, tablePile.size() - 1)));
         }
 
-        player.addCard(deck.drawCard());
+        if(!deck.isEmpty()) {
+            player.addCard(deck.drawCard());
+        }
+
+        nextTurn();
 
         return true;
     }
 
-    public void playCurrentMachineTurn(){
+    public boolean playCurrentMachineTurn(){
         IPlayer current = getCurrentPlayer();
-        if(current.isHuman()){return;}
+        if(current.isHuman()){return false;}
 
         MachinePlayer bot = (MachinePlayer) current;
         Card chosen = bot.chooseCardToPlay(currentSum);
 
-        if(chosen != null){playCard(bot, chosen);}
-        else{
+        if(chosen != null){
+            return playCard(bot, chosen);
+        }else{
             deck.addCards(bot.getHand());
             players.remove(bot);
+            return  false;
         }
     }
 
@@ -77,8 +95,16 @@ public class GameModel {
         return players.get(playerIndex % players.size());
     }
 
+    public int getCurrentSum(){return currentSum;}
+
     public void nextTurn(){
         if(playerIndex == players.size() - 1){playerIndex = 0;}
         else{playerIndex++;}
+    }
+
+    public boolean isGameOver(){
+        if(!players.contains(player)){return true;}
+
+        return players.size() < 2;
     }
 }

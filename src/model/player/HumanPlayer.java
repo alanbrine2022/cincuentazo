@@ -1,4 +1,7 @@
-package model;
+package model.player;
+
+import model.game.GameModel;
+import model.card.Card;
 
 public class HumanPlayer extends Player{
     public HumanPlayer(String name){
@@ -7,8 +10,7 @@ public class HumanPlayer extends Player{
 
     @Override
     public Card chooseCardToPlay(int currentSum){
-        //I don't know how to do
-        return null;
+        return hand.get(1);
     }
 
     public boolean playSelectedCard(Card card, GameModel gameModel){
