@@ -10,13 +10,6 @@ public class HumanPlayer extends Player{
 
     @Override
     public Card chooseCardToPlay(int currentSum){
-        return hand.get(1);
-    }
-
-    public boolean playSelectedCard(Card card, GameModel gameModel){
-        if(card == null || !getHand().contains(card)){
-            return false;
-        }
-        return gameModel.playCard(this, card);
+        return null;
     }
 }

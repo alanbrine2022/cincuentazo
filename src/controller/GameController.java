@@ -69,6 +69,11 @@ public class GameController {
 
     @FXML
     private void onCardClicked(MouseEvent event){
+        if(!gameModel.getHumanPlayer().hasValidMove(gameModel.getCurrentSum())){
+            showGameOver();
+            return;
+        }
+
         ImageView clicked = (ImageView) event.getSource();
         int index = getCardIndex(clicked);
 

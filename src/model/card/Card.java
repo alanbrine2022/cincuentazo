@@ -28,13 +28,13 @@ public class Card implements ICard{
     @Override
     public String getRankString(){
         String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
-        return ranks[rank];
+        return ranks[rank -1];
     }
 
     @Override
     public String getSuitString(){
         String[] suits = {"CLUBS", "DIAMONDS", "HEARTS", "SPADES"};
-        return suits[suit];
+        return suits[suit -1];
     }
 
     @Override

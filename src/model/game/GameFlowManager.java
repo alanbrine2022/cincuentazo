@@ -19,7 +19,7 @@ public class GameFlowManager {
         Task<Void> task = new Task<>(){
             @Override
             protected Void call() throws Exception{
-                Thread.sleep(1100);
+                Thread.sleep(2000);
                 return null;
             }
 

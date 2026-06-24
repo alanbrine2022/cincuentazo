@@ -85,7 +85,7 @@ public class GameModel {
         }else{
             deck.addCards(bot.getHand());
             players.remove(bot);
-            return  false;
+            return false;
         }
     }
 
