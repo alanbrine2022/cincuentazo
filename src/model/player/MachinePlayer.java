@@ -10,7 +10,6 @@ public class MachinePlayer extends Player{
         super(name, false);
     }
 
-    @Override
     public Card chooseCardToPlay(int currentSum){
         if(!hasValidMove(currentSum)){
             clearHand();

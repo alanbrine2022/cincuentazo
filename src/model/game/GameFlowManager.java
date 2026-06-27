@@ -41,6 +41,10 @@ public class GameFlowManager {
 
     public void checkNextTurn(){
         if(gameModel.getCurrentPlayer().isHuman()){
+            if(!gameModel.getHumanPlayer().hasValidMove(gameModel.getCurrentSum())){
+                controller.showGameOver();
+                return;
+            }
             setPlayerInputEnabled(true);
         }else{
             startMachineTurn();

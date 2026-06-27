@@ -6,6 +6,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import model.card.Card;
 import model.game.*;
+import model.player.IPlayer;
 import utils.CardImageLoader;
 import java.util.List;
 
@@ -22,6 +23,21 @@ public class GameController {
     @FXML private ImageView card3;
     @FXML private ImageView card4;
 
+    @FXML private ImageView botTopCard1;
+    @FXML private ImageView botTopCard2;
+    @FXML private ImageView botTopCard3;
+    @FXML private ImageView botTopCard4;
+
+    @FXML private ImageView botLeftCard1;
+    @FXML private ImageView botLeftCard2;
+    @FXML private ImageView botLeftCard3;
+    @FXML private ImageView botLeftCard4;
+
+    @FXML private ImageView botRightCard1;
+    @FXML private ImageView botRightCard2;
+    @FXML private ImageView botRightCard3;
+    @FXML private ImageView botRightCard4;
+
     @FXML
     public void initialize(){}
 
@@ -37,6 +53,7 @@ public class GameController {
         updateTopCard();
         updateSumLabel();
         updatePlayerHand();
+        updateBotsHands();
     }
 
     public void showGameOver(){
@@ -67,13 +84,43 @@ public class GameController {
         }
     }
 
+    private void updateBotsHands(){
+        clearBotCards(botTopCard1, botTopCard2, botTopCard3, botTopCard4);
+        clearBotCards(botLeftCard1, botLeftCard2, botLeftCard3, botLeftCard4);
+        clearBotCards(botRightCard1, botRightCard2, botRightCard3, botRightCard4);
+
+        List<IPlayer> activePlayers = gameModel.getPlayers();
+        int botIndex = 0;
+
+        for(IPlayer player : activePlayers){
+            if(player.isHuman()){continue;}
+            ImageView[] currentBotCards = getBotCardViews(botIndex);
+
+            for(int i=0; i<4; i++){
+                if(currentBotCards[i] != null) {
+                    currentBotCards[i].setImage(CardImageLoader.getBackImage());
+                    currentBotCards[i].setVisible(true);
+                }
+            }
+            botIndex++;
+        }
+    }
+
+    private void clearBotCards(ImageView... cards){
+        for(ImageView card : cards){
+            if(card != null){card.setVisible(false);}
+        }
+    }
+
+    private ImageView[] getBotCardViews(int botIndex){
+        if(botIndex == 0){return new ImageView[]{botTopCard1, botTopCard2, botTopCard3, botTopCard4};}
+        if(botIndex == 1){return new ImageView[]{botLeftCard1, botLeftCard2, botLeftCard3, botLeftCard4};}
+        if(botIndex == 2){return new ImageView[]{botRightCard1, botRightCard2, botRightCard3, botRightCard4};}
+        return new ImageView[0];
+    }
+
     @FXML
     private void onCardClicked(MouseEvent event){
-        if(!gameModel.getHumanPlayer().hasValidMove(gameModel.getCurrentSum())){
-            showGameOver();
-            return;
-        }
-
         ImageView clicked = (ImageView) event.getSource();
         int index = getCardIndex(clicked);
 
@@ -85,7 +132,7 @@ public class GameController {
 
         Card selected = hand.get(index);
 
-        boolean played = gameModel.playCard(gameModel.getHumanPlayer(), selected);
+        boolean played = gameModel.getHumanPlayer().playSelectedCard(selected, gameModel);
 
         if(played){
             updateView();

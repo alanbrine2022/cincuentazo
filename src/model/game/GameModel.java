@@ -113,4 +113,6 @@ public class GameModel {
     }
 
     public IPlayer getHumanPlayer(){return players.get(0);}
+
+    public List<IPlayer> getPlayers(){return players;}
 }

@@ -17,9 +17,6 @@ public abstract class Player implements IPlayer{
     }
 
     @Override
-    public String getName(){return name;}
-
-    @Override
     public List<Card> getHand(){return hand;}
 
     @Override
@@ -48,12 +45,4 @@ public abstract class Player implements IPlayer{
 
     @Override
     public void clearHand(){hand.clear();}
-
-    @Override
-    public boolean isEliminated(){
-        return hand.isEmpty();
-    }
-
-    @Override
-    public abstract Card chooseCardToPlay(int currentSum);
 }
