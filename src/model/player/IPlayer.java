@@ -1,6 +1,7 @@
 package model.player;
 
 import model.card.Card;
+import model.exceptions.InvalidMoveException;
 import model.game.GameModel;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface IPlayer {
 
     boolean hasValidMove(int currentSum);
     default Card chooseCardToPlay(int currentSum){throw new UnsupportedOperationException("Solo es usado por maquinas");}
-    default boolean playSelectedCard(Card card, GameModel gameModel){throw new UnsupportedOperationException("Solo usado por el jugador");}
+    default boolean playSelectedCard(Card card, GameModel gameModel) throws InvalidMoveException {throw new UnsupportedOperationException("Solo usado por el jugador");}
 
     int getHandSize();
 }

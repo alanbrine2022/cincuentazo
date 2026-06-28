@@ -3,6 +3,7 @@ package model.game;
 import controller.GameController;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import model.exceptions.InvalidMoveException;
 
 public class GameFlowManager {
     private final GameModel gameModel;
@@ -26,7 +27,11 @@ public class GameFlowManager {
             @Override
             protected void succeeded(){
                 Platform.runLater(() -> {
-                    gameModel.playCurrentMachineTurn();
+                    try {
+                        gameModel.playCurrentMachineTurn();
+                    } catch (InvalidMoveException e) {
+                        e.printStackTrace();
+                    }
                     controller.updateView();
 
                     if(gameModel.isGameOver()){controller.showGameOver(true);}

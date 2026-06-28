@@ -2,6 +2,7 @@ package model.game;
 
 import model.card.Card;
 import model.deck.Deck;
+import model.exceptions.InvalidMoveException;
 import model.player.HumanPlayer;
 import model.player.IPlayer;
 import model.player.MachinePlayer;
@@ -47,14 +48,16 @@ public class GameModel {
         currentSum = firstCard.getValue(currentSum);
     }
 
-    public boolean playCard(IPlayer player, Card card){
+    public boolean playCard(IPlayer player, Card card) throws InvalidMoveException {
         if(player == null || card == null){return false;}
 
         if(!players.contains(player)){return false;}
 
         if(!player.getHand().contains(card)){return false;}
 
-        if(!card.isValidMove(currentSum)){return false;}
+        if(!card.isValidMove(currentSum)){
+            throw new InvalidMoveException("No puedes jugar esta carta, excede el limite de 50.");
+        }
 
         player.removeCard(card);
         table.push(card);
@@ -73,7 +76,7 @@ public class GameModel {
         return true;
     }
 
-    public boolean playCurrentMachineTurn(){
+    public boolean playCurrentMachineTurn() throws InvalidMoveException {
         IPlayer current = getCurrentPlayer();
         if(current.isHuman()){return false;}
 

@@ -1,6 +1,7 @@
 package test;
 
 import model.card.Card;
+import model.exceptions.InvalidMoveException;
 import model.game.GameModel;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class GameModelTest {
 
     @Test
-    void testPlayCurrentMachineTurn() {
+    void testPlayCurrentMachineTurn() throws InvalidMoveException {
         GameModel game = new GameModel();
         game.startNewGame(3);
         game.nextTurn();
@@ -20,7 +21,7 @@ class GameModelTest {
     }
 
     @Test
-    void testPlayCard() {
+    void testPlayCard() throws InvalidMoveException {
         GameModel game = new GameModel();
         game.startNewGame(3);
         Card card = game.getCurrentPlayer().chooseCardToPlay(0);

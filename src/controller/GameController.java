@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.card.Card;
+import model.exceptions.InvalidMoveException;
 import model.game.*;
 import model.player.IPlayer;
 import utils.CardImageLoader;
@@ -150,7 +151,7 @@ public class GameController {
     }
 
     @FXML
-    private void onCardClicked(MouseEvent event){
+    private void onCardClicked(MouseEvent event) throws InvalidMoveException {
         ImageView clicked = (ImageView) event.getSource();
         int index = getCardIndex(clicked);
 
@@ -162,12 +163,28 @@ public class GameController {
 
         Card selected = hand.get(index);
 
-        boolean played = gameModel.getHumanPlayer().playSelectedCard(selected, gameModel);
+        try{
+            boolean played = gameModel.getHumanPlayer().playSelectedCard(selected, gameModel);
 
-        if(played){
-            updateView();
-            flowManager.checkNextTurn();
-        }else{System.out.println("Movimiento inválido");}
+            if(played) {
+                updateView();
+                flowManager.checkNextTurn();
+            }
+        }catch(InvalidMoveException e){
+            showInvalidMoveAlert(e.getMessage());
+        }
+    }
+
+    private void showInvalidMoveAlert(String message){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Movimiento inválido");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.setStyle("-fx-font-size: 14px; -fx-background-color: #FFF3E0");
+
+        alert.showAndWait();
     }
 
     private int getCardIndex(ImageView view){

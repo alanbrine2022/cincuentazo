@@ -115,7 +115,7 @@
    </right>
    <center>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <ImageView fx:id="imgDeck" fitHeight="100.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+         <ImageView fitHeight="100.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
             <Image url="@../resources/cards/back.png" />
          </ImageView>
          <ImageView fx:id="imgTopCard" fitHeight="100.0" fitWidth="70.0" layoutX="135.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
