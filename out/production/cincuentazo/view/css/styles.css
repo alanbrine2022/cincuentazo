@@ -1,0 +1,31 @@
+.root {
+    -fx-background-color: #0c5927;
+}
+
+.button{
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 12px 25px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+}
+
+.button:hover{
+    -fx-background-color: #4caf50;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.button:pressed{
+    -fx-background-color: #388e3c;
+}
+
+.titlelabel{
+    -fx-text-fill: #ffd700;
+    -fx-font-size: 40px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.8), 10, 0.5, 2, 2);
+}

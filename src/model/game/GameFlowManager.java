@@ -19,7 +19,7 @@ public class GameFlowManager {
         Task<Void> task = new Task<>(){
             @Override
             protected Void call() throws Exception{
-                Thread.sleep(2000);
+                Thread.sleep(1200);
                 return null;
             }
 
@@ -29,7 +29,7 @@ public class GameFlowManager {
                     gameModel.playCurrentMachineTurn();
                     controller.updateView();
 
-                    if(gameModel.isGameOver()){controller.showGameOver();}
+                    if(gameModel.isGameOver()){controller.showGameOver(true);}
                     else{
                         checkNextTurn();
                     }
@@ -42,7 +42,7 @@ public class GameFlowManager {
     public void checkNextTurn(){
         if(gameModel.getCurrentPlayer().isHuman()){
             if(!gameModel.getHumanPlayer().hasValidMove(gameModel.getCurrentSum())){
-                controller.showGameOver();
+                controller.showGameOver(false);
                 return;
             }
             setPlayerInputEnabled(true);

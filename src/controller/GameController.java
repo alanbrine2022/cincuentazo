@@ -1,21 +1,28 @@
 package controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Side;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import model.card.Card;
 import model.game.*;
 import model.player.IPlayer;
 import utils.CardImageLoader;
 import java.util.List;
+import java.util.Optional;
 
 public class GameController {
     GameModel gameModel;
     private GameFlowManager flowManager;
 
     @FXML private Label sumLabel;
-    @FXML private ImageView imgDeck;
+    @FXML private Label turnLabel;
     @FXML private ImageView imgTopCard;
 
     @FXML private ImageView card1;
@@ -51,14 +58,37 @@ public class GameController {
 
     public void updateView(){
         updateTopCard();
+        updateTurnLabel();
         updateSumLabel();
         updatePlayerHand();
         updateBotsHands();
     }
 
-    public void showGameOver(){
-        System.out.println("Game over");
-        //Por terminar
+    public void showGameOver(boolean won){
+        try{
+            FXMLLoader loader = new FXMLLoader(GameController.class.getResource("../view/GameOver.fxml"));
+            Parent gameOverRoot = loader.load();
+
+            GameOverController gameOverController = loader.getController();
+            gameOverController.setWon(won);
+
+            Stage stage = (Stage) sumLabel.getScene().getWindow();
+            stage.setScene(new Scene(gameOverRoot));
+            gameOverRoot.getStylesheets().add(GameController.class.getResource("../view/css/styles.css").toExternalForm());
+            stage.setTitle("Cincuentazo - Fin de la partida");
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void updateTurnLabel(){
+        if(gameModel.getCurrentTurn() == 0){
+            turnLabel.setText("Turno: Jugador");
+        }else{
+            turnLabel.setText("Turno: Bot "+ gameModel.getCurrentTurn());
+        }
+
     }
 
     private void updateSumLabel(){
@@ -154,5 +184,54 @@ public class GameController {
         card2.setDisable(!clickable);
         card3.setDisable(!clickable);
         card4.setDisable(!clickable);
+    }
+
+    @FXML
+    private void onPauseClicked(MouseEvent event){
+        ContextMenu pauseMenu = new ContextMenu();
+
+        MenuItem resumeItem = new MenuItem("Reanudar");
+        MenuItem newGameItem = new MenuItem("Nuevo Juego");
+        MenuItem exitItem = new MenuItem("Salir");
+
+        resumeItem.setOnAction(e -> pauseMenu.hide());
+
+        newGameItem.setOnAction(e -> {
+            ChoiceDialog<Integer> dialog = new ChoiceDialog<>(1, 1, 2, 3);
+            dialog.setTitle("Cincuentazo");
+            dialog.setHeaderText("¿Con cuantos bots quieres jugar?");
+            dialog.setContentText("Número de bots: ");
+
+            Optional<Integer> result = dialog.showAndWait();
+
+            if(result.isPresent()) {
+                int numBots = result.get();
+                startNewGame(numBots);
+                pauseMenu.hide();
+            }
+        });
+
+        exitItem.setOnAction(e -> {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.close();
+        });
+
+        pauseMenu.getItems().addAll(resumeItem, newGameItem, exitItem);
+        pauseMenu.show((Node) event.getSource(), Side.BOTTOM, 0, 0);
+    }
+
+    @FXML
+    private void onHelpClicked(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText("Reglas de Cincuentazo");
+        alert.setHeaderText("Cómo jugar");
+        alert.setHeaderText("""
+                -No puedes pasar de 50.
+                -As puede valer 1 o 10
+                -K, Q, J restan 10
+                -9 es neutro
+                -Si no tienes cartas para jugar quedas eliminado.
+                """);
+        alert.showAndWait();
     }
 }

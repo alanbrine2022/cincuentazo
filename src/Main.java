@@ -11,6 +11,7 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("view/Menu.fxml"));
             Parent root = loader.load();
 
+            root.getStylesheets().add(Main.class.getResource("view/css/styles.css").toExternalForm());
             primaryStage.setTitle("Cincuentazo");
             primaryStage.setScene(new Scene(root));
             primaryStage.show();

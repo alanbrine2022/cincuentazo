@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GameOverController">
+   <children>
+      <VBox alignment="TOP_CENTER" layoutX="1.0" layoutY="-3.0" prefHeight="400.0" prefWidth="600.0" spacing="40.0">
+         <children>
+            <Label fx:id="wonLabel" styleClass="titlelabel" text="Ganaste" />
+            <Button fx:id="newGameButton" mnemonicParsing="false" onAction="#handleNewGame" styleClass="button" text="Nuevo Juego" />
+            <Button fx:id="menuButton" mnemonicParsing="false" onAction="#handleBackToMenu" styleClass="button" text="Menú" />
+            <Button fx:id="exitButton" mnemonicParsing="false" onAction="#handleExit" styleClass="button" text="Salir" />
+         </children>
+         <padding>
+            <Insets top="60.0" />
+         </padding>
+      </VBox>
+   </children>
+</Pane>
